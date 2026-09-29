@@ -1,0 +1,29 @@
+[gd_scene format=3 uid="uid://bmgx4usrgj1hn"]
+
+[ext_resource type="PackedScene" uid="uid://c6gxxdpkt0iev" path="res://assets/tile_endRoundSpawn.glb" id="1_o05ji"]
+[ext_resource type="Script" uid="uid://ctv6shi2tyok" path="res://scripts/tile_end.gd" id="1_q2rg3"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_sm8db"]
+size = Vector3(1, 0.2, 1)
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_wtqeq"]
+
+[node name="TileEnd" type="Area3D" unique_id=786786465 groups=["path"]]
+collision_mask = 0
+script = ExtResource("1_q2rg3")
+
+[node name="tile_endRoundSpawn" parent="." unique_id=967833372 instance=ExtResource("1_o05ji")]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=2035195211]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.1, 0)
+shape = SubResource("BoxShape3D_sm8db")
+
+[node name="Area3D" type="Area3D" parent="." unique_id=1336185702 groups=["end_point"]]
+collision_layer = 4
+collision_mask = 2
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D" unique_id=1952542907]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.050861716, 0)
+shape = SubResource("CapsuleShape3D_wtqeq")
+
+[connection signal="area_entered" from="Area3D" to="." method="_on_area_3d_area_entered"]

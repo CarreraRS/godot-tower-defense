@@ -1,0 +1,16 @@
+[gd_scene format=3 uid="uid://b70dul4h27wj0"]
+
+[node name="game_over_scene" type="Control" unique_id=1916403781]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 1278.0
+offset_bottom = 720.0
+
+[node name="Label" type="Label" parent="." unique_id=2066383708]
+layout_mode = 0
+offset_left = 61.0
+offset_top = 214.0
+offset_right = 1689.0
+offset_bottom = 623.0
+theme_override_font_sizes/font_size = 200
+text = "Game Over"

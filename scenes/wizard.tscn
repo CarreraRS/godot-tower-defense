@@ -1,0 +1,84 @@
+[gd_scene format=3 uid="uid://c1re0i2836o30"]
+
+[ext_resource type="Script" uid="uid://bicjgyhe671ew" path="res://scripts/wizard.gd" id="1_8qlyk"]
+[ext_resource type="PackedScene" uid="uid://nq8sg4avgv1b" path="res://assets/model/Wizard.fbx" id="2_4jkov"]
+[ext_resource type="PackedScene" uid="uid://bui2kgul48s0x" path="res://scenes/cannonball.tscn" id="2_ba5mt"]
+[ext_resource type="Script" uid="uid://fjc1ufepyg6l" path="res://addons/godot_state_charts/state_chart.gd" id="3_ba5mt"]
+[ext_resource type="Script" uid="uid://dayxrb7jey2st" path="res://addons/godot_state_charts/compound_state.gd" id="4_var7a"]
+[ext_resource type="Script" uid="uid://d07j65anr76ct" path="res://addons/godot_state_charts/atomic_state.gd" id="5_1g42w"]
+[ext_resource type="Script" uid="uid://d03tj4qr27xl1" path="res://addons/godot_state_charts/transition.gd" id="6_otiyp"]
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_21f5h"]
+radius = 3.0
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_wtqeq"]
+
+[node name="wizard" type="Node3D" unique_id=618959368]
+transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0, 0)
+script = ExtResource("1_8qlyk")
+projectile_type = ExtResource("2_ba5mt")
+
+[node name="Wizard" parent="." unique_id=1696664490 groups=["grid_empty"] instance=ExtResource("2_4jkov")]
+transform = Transform3D(-0.9976843, 0, -0.06801539, 0, 1, 0, 0.06801539, 0, -0.9976843, -0.043824434, 0, 0.015775204)
+
+[node name="projectile_spawn" type="Node3D" parent="Wizard" unique_id=1912620325]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.71723, -0.06524223)
+
+[node name="PatrolZone" type="Area3D" parent="." unique_id=1775163202]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+collision_layer = 0
+collision_mask = 2
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="PatrolZone" unique_id=378919890]
+shape = SubResource("CylinderShape3D_21f5h")
+
+[node name="StateChart" type="Node" parent="." unique_id=1492098158]
+script = ExtResource("3_ba5mt")
+
+[node name="CompoundState" type="Node" parent="StateChart" unique_id=176668355]
+script = ExtResource("4_var7a")
+initial_state = NodePath("PatrollingState")
+
+[node name="PatrollingState" type="Node" parent="StateChart/CompoundState" unique_id=1845301676]
+script = ExtResource("5_1g42w")
+
+[node name="AcquringState" type="Node" parent="StateChart/CompoundState/PatrollingState" unique_id=1968505122]
+script = ExtResource("6_otiyp")
+to = NodePath("../../AcquiringState")
+event = &"to_acquiring_state"
+
+[node name="AcquiringState" type="Node" parent="StateChart/CompoundState" unique_id=1221567799]
+script = ExtResource("5_1g42w")
+
+[node name="AttackingState" type="Node" parent="StateChart/CompoundState/AcquiringState" unique_id=981976625]
+script = ExtResource("6_otiyp")
+to = NodePath("../../AttackingState")
+event = &"to_attacking_state"
+
+[node name="PatrollingState" type="Node" parent="StateChart/CompoundState/AcquiringState" unique_id=1845887899]
+script = ExtResource("6_otiyp")
+to = NodePath("../../PatrollingState")
+event = &"to_patrolling_state"
+
+[node name="AttackingState" type="Node" parent="StateChart/CompoundState" unique_id=1636277752]
+script = ExtResource("5_1g42w")
+
+[node name="PatrollingState" type="Node" parent="StateChart/CompoundState/AttackingState" unique_id=1941962069]
+script = ExtResource("6_otiyp")
+to = NodePath("../../PatrollingState")
+event = &"to_patrolling_state"
+
+[node name="Area3D" type="Area3D" parent="." unique_id=213785955]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.00040960312, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D" unique_id=474360826]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.7701386, 0)
+shape = SubResource("CapsuleShape3D_wtqeq")
+
+[connection signal="area_entered" from="PatrolZone" to="." method="_on_patrol_zone_area_entered"]
+[connection signal="area_exited" from="PatrolZone" to="." method="_on_patrol_zone_area_exited"]
+[connection signal="state_processing" from="StateChart/CompoundState/PatrollingState" to="." method="_on_patrolling_state_state_processing"]
+[connection signal="state_entered" from="StateChart/CompoundState/AcquiringState" to="." method="_on_acquiring_state_state_entered"]
+[connection signal="state_physics_processing" from="StateChart/CompoundState/AcquiringState" to="." method="_on_acquiring_state_state_physics_processing"]
+[connection signal="state_entered" from="StateChart/CompoundState/AttackingState" to="." method="_on_attacking_state_state_entered"]
+[connection signal="state_physics_processing" from="StateChart/CompoundState/AttackingState" to="." method="_on_attacking_state_state_physics_processing"]

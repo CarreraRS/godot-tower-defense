@@ -1,0 +1,215 @@
+[gd_scene format=3 uid="uid://bdh0cqv4kt8t8"]
+
+[ext_resource type="Script" uid="uid://jrbuhd5jan6n" path="res://scripts/basic_enemy.gd" id="1_x18ab"]
+[ext_resource type="Script" uid="uid://fjc1ufepyg6l" path="res://addons/godot_state_charts/state_chart.gd" id="2_5wlrk"]
+[ext_resource type="Script" uid="uid://dayxrb7jey2st" path="res://addons/godot_state_charts/compound_state.gd" id="3_ah54x"]
+[ext_resource type="Script" uid="uid://d07j65anr76ct" path="res://addons/godot_state_charts/atomic_state.gd" id="4_oaeau"]
+[ext_resource type="Script" uid="uid://d03tj4qr27xl1" path="res://addons/godot_state_charts/transition.gd" id="5_2ibju"]
+[ext_resource type="Script" uid="uid://bi61o5kuuccyl" path="res://scripts/progress_bar.gd" id="6_kj7um"]
+[ext_resource type="AudioStream" uid="uid://3i4mrdifi4k7" path="res://audio/explosion.mp3" id="7_xtq1q"]
+[ext_resource type="PackedScene" uid="uid://cgqgcdbbu4rwc" path="res://scenes/smoke.tscn" id="8_d2i56"]
+[ext_resource type="PackedScene" uid="uid://ctnksfkdnfrvl" path="res://scenes/explosion_particle.tscn" id="8_q3ul8"]
+
+[sub_resource type="Animation" id="Animation_hb22s"]
+resource_name = "despawn"
+length = 1.25
+step = 0.05
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Path3D/PathFollow3D/Enemy:scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1.2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector3(1, 1, 1), Vector3(0, 0, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Path3D/PathFollow3D/Enemy:visible")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(1.2),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+
+[sub_resource type="Animation" id="Animation_ayxcf"]
+resource_name = "spawn"
+length = 1.25
+step = 0.05
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Path3D/PathFollow3D/Enemy:scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1.2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector3(0, 0, 0), Vector3(1, 1, 1)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Path3D/PathFollow3D/Enemy:visible")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_jbkq5"]
+_data = {
+&"despawn": SubResource("Animation_hb22s"),
+&"spawn": SubResource("Animation_ayxcf")
+}
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_o8hsp"]
+viewport_path = NodePath("HealthBar")
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_qn8pp"]
+height = 0.75
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_h337k"]
+bg_color = Color(0, 0, 0, 0.376471)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_oqljt"]
+resource_local_to_scene = true
+bg_color = Color(0, 0.67451, 0.768627, 1)
+
+[node name="Enemy01" type="Node3D" unique_id=1678401511]
+script = ExtResource("1_x18ab")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=1200426417 groups=["enemies"]]
+libraries/ = SubResource("AnimationLibrary_jbkq5")
+
+[node name="EnemyStateChart" type="Node" parent="." unique_id=1399279207]
+script = ExtResource("2_5wlrk")
+
+[node name="CompoundState" type="Node" parent="EnemyStateChart" unique_id=1367437632]
+script = ExtResource("3_ah54x")
+initial_state = NodePath("Spawning")
+
+[node name="Spawning" type="Node" parent="EnemyStateChart/CompoundState" unique_id=2005658420]
+script = ExtResource("4_oaeau")
+
+[node name="ToTravellingState" type="Node" parent="EnemyStateChart/CompoundState/Spawning" unique_id=814780945]
+script = ExtResource("5_2ibju")
+to = NodePath("../../Travelling")
+event = &"to_travelling_state"
+
+[node name="Travelling" type="Node" parent="EnemyStateChart/CompoundState" unique_id=886045523]
+script = ExtResource("4_oaeau")
+
+[node name="ToDamagingState" type="Node" parent="EnemyStateChart/CompoundState/Travelling" unique_id=387799432]
+script = ExtResource("5_2ibju")
+to = NodePath("../../Damaging")
+event = &"to_damaging_state"
+
+[node name="ToDyingState" type="Node" parent="EnemyStateChart/CompoundState/Travelling" unique_id=509689177]
+script = ExtResource("5_2ibju")
+to = NodePath("../../Dying")
+event = &"to_dying_state"
+
+[node name="Damaging" type="Node" parent="EnemyStateChart/CompoundState" unique_id=1637884535]
+script = ExtResource("4_oaeau")
+
+[node name="ToDespawningState" type="Node" parent="EnemyStateChart/CompoundState/Damaging" unique_id=2013260850]
+script = ExtResource("5_2ibju")
+to = NodePath("../../Despawning")
+event = &"to_despawning_state"
+
+[node name="Dying" type="Node" parent="EnemyStateChart/CompoundState" unique_id=220743016]
+script = ExtResource("4_oaeau")
+
+[node name="ToRemoveEnemyState" type="Node" parent="EnemyStateChart/CompoundState/Dying" unique_id=877207428]
+script = ExtResource("5_2ibju")
+to = NodePath("../../RemoveEnemy")
+event = &"to_remove_enemy_state"
+
+[node name="Despawning" type="Node" parent="EnemyStateChart/CompoundState" unique_id=2118876327]
+script = ExtResource("4_oaeau")
+
+[node name="ToRemoveEnemyState" type="Node" parent="EnemyStateChart/CompoundState/Despawning" unique_id=2032529499]
+script = ExtResource("5_2ibju")
+to = NodePath("../../RemoveEnemy")
+event = &"to_remove_enemy_state"
+
+[node name="RemoveEnemy" type="Node" parent="EnemyStateChart/CompoundState" unique_id=1959358961]
+script = ExtResource("4_oaeau")
+
+[node name="Path3D" type="Path3D" parent="." unique_id=630869699]
+
+[node name="PathFollow3D" type="PathFollow3D" parent="Path3D" unique_id=890077810]
+transform = Transform3D(0.999972, 0, 0, 0, 0.999989, 0, 0, 0, 0.999978, 0, 0, 0)
+
+[node name="Enemy" type="Node3D" parent="Path3D/PathFollow3D" unique_id=1124699242]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.2, 0)
+visible = false
+
+[node name="Sprite3D" type="Sprite3D" parent="Path3D/PathFollow3D/Enemy" unique_id=1838931426]
+transform = Transform3D(0.500014, 0, 0, 0, 0.500004, 0, 0, 0, 0.50001, 0, 0.745957, 0)
+billboard = 1
+texture = SubResource("ViewportTexture_o8hsp")
+
+[node name="Area3D" type="Area3D" parent="Path3D/PathFollow3D" unique_id=175340540 groups=["enemies"]]
+collision_layer = 2
+collision_mask = 4
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Path3D/PathFollow3D/Area3D" unique_id=1807472726]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
+shape = SubResource("CylinderShape3D_qn8pp")
+
+[node name="Explosion" parent="Path3D/PathFollow3D" unique_id=784622901 instance=ExtResource("8_q3ul8")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.530175, 0)
+
+[node name="Smoke" parent="Path3D/PathFollow3D" unique_id=26287529 instance=ExtResource("8_d2i56")]
+transform = Transform3D(1, 0, 0, 0, 0.999999, 0, 0, 0, 0.999999, 0, 0.325, 0)
+
+[node name="ExplosionAudio" type="AudioStreamPlayer" parent="." unique_id=966100570]
+stream = ExtResource("7_xtq1q")
+bus = &"FX"
+
+[node name="HealthBar" type="SubViewport" parent="." unique_id=2048402474]
+transparent_bg = true
+handle_input_locally = false
+size = Vector2i(256, 64)
+render_target_update_mode = 4
+
+[node name="ProgressBar" type="ProgressBar" parent="HealthBar" unique_id=1535675821]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -64.0
+offset_top = -12.0
+offset_right = 64.0
+offset_bottom = 12.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/background = SubResource("StyleBoxFlat_h337k")
+theme_override_styles/fill = SubResource("StyleBoxFlat_oqljt")
+value = 80.0
+show_percentage = false
+script = ExtResource("6_kj7um")
+
+[connection signal="state_entered" from="EnemyStateChart/CompoundState/Spawning" to="." method="_on_spawning_state_entered"]
+[connection signal="state_entered" from="EnemyStateChart/CompoundState/Travelling" to="." method="_on_travelling_state_entered"]
+[connection signal="state_processing" from="EnemyStateChart/CompoundState/Travelling" to="." method="_on_travelling_state_processing"]
+[connection signal="state_entered" from="EnemyStateChart/CompoundState/Damaging" to="." method="_on_damaging_state_entered"]
+[connection signal="state_entered" from="EnemyStateChart/CompoundState/Dying" to="." method="_on_dying_state_entered"]
+[connection signal="state_entered" from="EnemyStateChart/CompoundState/Despawning" to="." method="_on_despawning_state_entered"]
+[connection signal="state_entered" from="EnemyStateChart/CompoundState/RemoveEnemy" to="." method="_on_remove_enemy_state_entered"]
+[connection signal="area_entered" from="Path3D/PathFollow3D/Area3D" to="." method="_on_area_3d_area_entered"]
+[connection signal="value_changed" from="HealthBar/ProgressBar" to="HealthBar/ProgressBar" method="_on_value_changed"]
