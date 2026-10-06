@@ -1,0 +1,21 @@
+[gd_resource type="Resource" script_class="EnemyData" format=3]
+
+[ext_resource type="Script" path="res://td/scripts/enemy_data.gd" id="1"]
+[ext_resource type="PackedScene" path="res://td/models/helicopter.tscn" id="2"]
+
+[resource]
+script = ExtResource("1")
+id = &"helicopter"
+display_name = "Helicopter"
+thai_name = "เฮลิคอปเตอร์"
+model = ExtResource("2")
+max_hp = 230.0
+speed = 1.2
+armor = 2.0
+reward = 25
+base_damage = 3
+is_air = true
+fly_height = 1.5
+is_boss = false
+explodes = true
+model_scale = 1.0

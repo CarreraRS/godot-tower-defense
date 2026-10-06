@@ -1,0 +1,21 @@
+[gd_resource type="Resource" script_class="EnemyData" format=3]
+
+[ext_resource type="Script" path="res://td/scripts/enemy_data.gd" id="1"]
+[ext_resource type="PackedScene" path="res://td/models/bomber.tscn" id="2"]
+
+[resource]
+script = ExtResource("1")
+id = &"bomber"
+display_name = "Bomber"
+thai_name = "เครื่องบินทิ้งระเบิด"
+model = ExtResource("2")
+max_hp = 2800.0
+speed = 0.42
+armor = 6.0
+reward = 300
+base_damage = 12
+is_air = true
+fly_height = 2.4
+is_boss = true
+explodes = true
+model_scale = 1.0

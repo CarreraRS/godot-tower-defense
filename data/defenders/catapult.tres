@@ -1,0 +1,30 @@
+[gd_resource type="Resource" script_class="DefenderData" format=3]
+
+[ext_resource type="Script" path="res://td/scripts/defender_data.gd" id="1"]
+[ext_resource type="PackedScene" path="res://td/models/catapult.tscn" id="2"]
+[ext_resource type="Texture2D" path="res://td/icons/catapult.png" id="3"]
+
+[resource]
+script = ExtResource("1")
+id = &"catapult"
+display_name = "Catapult"
+thai_name = "เครื่องยิงหิน"
+description = "ขว้างหินยักษ์ระยะไกลมาก ดาเมจกระจายกว้าง\nโจมตีภาคพื้นเท่านั้น"
+model = ExtResource("2")
+icon = ExtResource("3")
+color = Color(0.5, 0.4, 0.3, 1)
+cost = 170
+attack_range = 4.3
+damage = 55.0
+fire_interval = 2.6
+hits_ground = true
+hits_air = false
+splash_radius = 1.2
+armor_pierce = false
+slow_factor = 1.0
+slow_duration = 0.0
+attack_type = 3
+projectile_speed = 5.0
+projectile_color = Color(0.55, 0.5, 0.45, 1)
+attack_anim = &""
+idle_anim = &""

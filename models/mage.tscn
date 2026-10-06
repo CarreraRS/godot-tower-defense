@@ -1,0 +1,247 @@
+[gd_scene format=3]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_1"]
+albedo_color = Color(0.38, 0.16, 0.6, 1.0)
+roughness = 0.8
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_2"]
+top_radius = 0.09
+bottom_radius = 0.15
+height = 0.34
+radial_segments = 8
+rings = 0
+material = SubResource("StandardMaterial3D_1")
+
+[sub_resource type="BoxMesh" id="BoxMesh_3"]
+size = Vector3(0.21, 0.22, 0.13)
+material = SubResource("StandardMaterial3D_1")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_4"]
+albedo_color = Color(0.2, 0.13, 0.08, 1.0)
+roughness = 0.8
+
+[sub_resource type="BoxMesh" id="BoxMesh_5"]
+size = Vector3(0.215, 0.03, 0.135)
+material = SubResource("StandardMaterial3D_4")
+
+[sub_resource type="BoxMesh" id="BoxMesh_6"]
+size = Vector3(0.065, 0.2, 0.075)
+material = SubResource("StandardMaterial3D_1")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_7"]
+albedo_color = Color(0.93, 0.75, 0.6, 1.0)
+roughness = 0.8
+
+[sub_resource type="SphereMesh" id="SphereMesh_8"]
+radius = 0.036
+height = 0.072
+radial_segments = 8
+rings = 5
+material = SubResource("StandardMaterial3D_7")
+
+[sub_resource type="BoxMesh" id="BoxMesh_9"]
+size = Vector3(0.065, 0.2, 0.075)
+material = SubResource("StandardMaterial3D_1")
+
+[sub_resource type="SphereMesh" id="SphereMesh_10"]
+radius = 0.036
+height = 0.072
+radial_segments = 8
+rings = 5
+material = SubResource("StandardMaterial3D_7")
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_11"]
+top_radius = 0.03
+bottom_radius = 0.03
+height = 0.04
+radial_segments = 6
+rings = 0
+material = SubResource("StandardMaterial3D_7")
+
+[sub_resource type="SphereMesh" id="SphereMesh_12"]
+radius = 0.075
+height = 0.15
+radial_segments = 8
+rings = 6
+material = SubResource("StandardMaterial3D_7")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_13"]
+albedo_color = Color(0.1, 0.08, 0.06, 1.0)
+roughness = 0.8
+
+[sub_resource type="BoxMesh" id="BoxMesh_14"]
+size = Vector3(0.015, 0.02, 0.01)
+material = SubResource("StandardMaterial3D_13")
+
+[sub_resource type="BoxMesh" id="BoxMesh_15"]
+size = Vector3(0.015, 0.02, 0.01)
+material = SubResource("StandardMaterial3D_13")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_16"]
+albedo_color = Color(0.95, 0.75, 0.25, 1.0)
+roughness = 0.8
+metallic = 0.5
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_17"]
+top_radius = 0.152
+bottom_radius = 0.152
+height = 0.03
+radial_segments = 8
+rings = 0
+material = SubResource("StandardMaterial3D_16")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_18"]
+albedo_color = Color(0.08, 0.06, 0.06, 1.0)
+roughness = 0.8
+
+[sub_resource type="SphereMesh" id="SphereMesh_19"]
+radius = 0.08
+height = 0.16
+radial_segments = 8
+rings = 5
+material = SubResource("StandardMaterial3D_18")
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_20"]
+top_radius = 0.15
+bottom_radius = 0.15
+height = 0.015
+radial_segments = 10
+rings = 0
+material = SubResource("StandardMaterial3D_1")
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_21"]
+top_radius = 0.078
+bottom_radius = 0.08
+height = 0.03
+radial_segments = 8
+rings = 0
+material = SubResource("StandardMaterial3D_16")
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_22"]
+top_radius = 0.0
+bottom_radius = 0.078
+height = 0.24
+radial_segments = 8
+rings = 0
+material = SubResource("StandardMaterial3D_1")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_23"]
+albedo_color = Color(0.42, 0.27, 0.14, 1.0)
+roughness = 0.8
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_24"]
+top_radius = 0.012
+bottom_radius = 0.014
+height = 0.64
+radial_segments = 6
+rings = 0
+material = SubResource("StandardMaterial3D_23")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_25"]
+albedo_color = Color(0.35, 0.85, 1.0, 1.0)
+roughness = 0.8
+emission_enabled = true
+emission = Color(0.35, 0.85, 1.0, 1.0)
+emission_energy_multiplier = 3.0
+
+[sub_resource type="SphereMesh" id="SphereMesh_26"]
+radius = 0.045
+height = 0.09
+radial_segments = 8
+rings = 5
+material = SubResource("StandardMaterial3D_25")
+
+[node name="MageModel" type="Node3D"]
+
+[node name="Robe" type="MeshInstance3D" parent="."]
+position = Vector3(0, 0.17, 0)
+mesh = SubResource("CylinderMesh_2")
+
+[node name="Torso" type="MeshInstance3D" parent="."]
+position = Vector3(0, 0.32, 0)
+mesh = SubResource("BoxMesh_3")
+
+[node name="Belt" type="MeshInstance3D" parent="."]
+position = Vector3(0, 0.22, 0)
+mesh = SubResource("BoxMesh_5")
+
+[node name="Arm0" type="Node3D" parent="."]
+position = Vector3(-0.14, 0.42, 0)
+rotation = Vector3(-0.43633, 0.0, 0.0)
+
+[node name="Sleeve" type="MeshInstance3D" parent="Arm0"]
+position = Vector3(0, -0.1, 0)
+mesh = SubResource("BoxMesh_6")
+
+[node name="Hand" type="MeshInstance3D" parent="Arm0"]
+position = Vector3(0, -0.21, 0)
+mesh = SubResource("SphereMesh_8")
+
+[node name="Arm1" type="Node3D" parent="."]
+position = Vector3(0.14, 0.42, 0)
+rotation = Vector3(-0.43633, 0.0, 0.0)
+
+[node name="Sleeve" type="MeshInstance3D" parent="Arm1"]
+position = Vector3(0, -0.1, 0)
+mesh = SubResource("BoxMesh_9")
+
+[node name="Hand" type="MeshInstance3D" parent="Arm1"]
+position = Vector3(0, -0.21, 0)
+mesh = SubResource("SphereMesh_10")
+
+[node name="Neck" type="MeshInstance3D" parent="."]
+position = Vector3(0, 0.45, 0)
+mesh = SubResource("CylinderMesh_11")
+
+[node name="Head" type="MeshInstance3D" parent="."]
+position = Vector3(0, 0.53, 0)
+mesh = SubResource("SphereMesh_12")
+
+[node name="Eye0" type="MeshInstance3D" parent="."]
+position = Vector3(-0.025, 0.54, -0.072)
+mesh = SubResource("BoxMesh_14")
+
+[node name="Eye1" type="MeshInstance3D" parent="."]
+position = Vector3(0.025, 0.54, -0.072)
+mesh = SubResource("BoxMesh_15")
+
+[node name="Trim" type="MeshInstance3D" parent="."]
+position = Vector3(0, 0.015, 0)
+mesh = SubResource("CylinderMesh_17")
+
+[node name="Hair" type="MeshInstance3D" parent="."]
+position = Vector3(0, 0.52, 0.02)
+mesh = SubResource("SphereMesh_19")
+
+[node name="Brim" type="MeshInstance3D" parent="."]
+position = Vector3(0, 0.585, 0)
+mesh = SubResource("CylinderMesh_20")
+
+[node name="Band" type="MeshInstance3D" parent="."]
+position = Vector3(0, 0.605, 0)
+mesh = SubResource("CylinderMesh_21")
+
+[node name="Hat" type="MeshInstance3D" parent="."]
+position = Vector3(0, 0.72, 0.02)
+rotation = Vector3(-0.20944, 0.0, 0.0)
+mesh = SubResource("CylinderMesh_22")
+
+[node name="Staff" type="Node3D" parent="."]
+position = Vector3(0.17, 0.0, -0.06)
+
+[node name="Pole" type="MeshInstance3D" parent="Staff"]
+position = Vector3(0, 0.32, 0)
+mesh = SubResource("CylinderMesh_24")
+
+[node name="Orb" type="MeshInstance3D" parent="Staff"]
+position = Vector3(0, 0.68, 0)
+mesh = SubResource("SphereMesh_26")
+
+[node name="Glow" type="OmniLight3D" parent="Staff"]
+position = Vector3(0, 0.68, 0)
+light_color = Color(0.4, 0.8, 1, 1)
+light_energy = 0.6
+omni_range = 0.8
+
+[node name="Muzzle" type="Marker3D" parent="."]
+position = Vector3(0.17, 0.68, -0.06)
