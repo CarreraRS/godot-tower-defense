@@ -14,8 +14,8 @@ compatibility/default_parent_skeleton_in_mesh_instance_3d=true
 
 [application]
 
-config/name="Tower Defense Tutorial 2"
-run/main_scene="res://scenes/main.tscn"
+config/name="Haupttür"
+run/main_scene="res://td/scenes/main_menu.tscn"
 config/features=PackedStringArray("4.7", "Forward Plus")
 config/icon="res://icon.svg"
 
@@ -27,10 +27,17 @@ PathGenInstance="*res://scripts/path_generator.gd"
 
 window/size/viewport_width=1280
 window/size/viewport_height=720
+window/stretch/mode="canvas_items"
+window/stretch/aspect="expand"
 
 [editor_plugins]
 
 enabled=PackedStringArray("res://addons/godot_state_charts/plugin.cfg")
+
+[gui]
+
+theme/custom="res://td/theme/ui_theme.tres"
+theme/custom_font="res://td/theme/ui_font.tres"
 
 [global]
 

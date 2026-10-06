@@ -1,0 +1,21 @@
+[gd_resource type="Resource" script_class="EnemyData" format=3]
+
+[ext_resource type="Script" path="res://td/scripts/enemy_data.gd" id="1"]
+[ext_resource type="PackedScene" path="res://td/models/tank.tscn" id="2"]
+
+[resource]
+script = ExtResource("1")
+id = &"tank"
+display_name = "Tank"
+thai_name = "รถถัง"
+model = ExtResource("2")
+max_hp = 600.0
+speed = 0.6
+armor = 12.0
+reward = 40
+base_damage = 4
+is_air = false
+fly_height = 0.0
+is_boss = false
+explodes = true
+model_scale = 1.0
