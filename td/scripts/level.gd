@@ -21,6 +21,12 @@ const WAYPOINTS: Array[Vector2i] = [
 ]
 const GATE_POS := Vector3(-2.2, 0, 2)
 const CASTLE_POS := Vector3(21.3, 0, 9)
+## ปราสาทยิงพลังใส่ศัตรูที่ยืนตีประตู
+const CASTLE_FIRE_POS := CASTLE_POS + Vector3(-0.2, 1.6, 0)
+const CASTLE_RELOAD := 1.5         ## วินาทีต่อนัด
+const CASTLE_FIRST_DELAY := 1.0    ## เวลาตั้งตัวก่อนยิงนัดแรก (ให้ศัตรูได้ตีก่อนสักที)
+const CASTLE_DAMAGE := 60.0        ## ดาเมจต่อนัด (ทหารราบตายนัดเดียวเสมอ)
+const CASTLE_BOLT_TIME := 0.35     ## เวลาที่ลูกพลังลอยไปถึงเป้า
 
 @export var defenders: Array[DefenderData] = []
 @export var start_gold: int = 300
@@ -58,6 +64,7 @@ var _hover_cell: Vector2i = Vector2i(-99, -99)
 var _hover_mesh: MeshInstance3D
 var _boss: TDEnemy
 var _enemy_cache: Dictionary = {}
+var _castle_cd: float = CASTLE_FIRST_DELAY
 var _boom_players: Array[AudioStreamPlayer] = []
 var _world: Node3D
 var _units: Node3D
@@ -395,7 +402,7 @@ func spawn_enemy(d: EnemyData) -> TDEnemy:
 	var e := TDEnemy.new()
 	e.setup(d, air_curve if d.is_air else ground_curve, 1.0 + 0.04 * phase_index)
 	e.died.connect(_on_enemy_died)
-	e.reached_base.connect(_on_enemy_reached)
+	e.attacked_base.connect(_on_enemy_attack)
 	_units.add_child(e)
 	if d.is_boss:
 		_boss = e
@@ -410,24 +417,95 @@ func _on_enemy_died(e: TDEnemy) -> void:
 		_boss = null
 	_check_phase_end.call_deferred()
 
-func _on_enemy_reached(e: TDEnemy) -> void:
-	lives = max(lives - e.data.base_damage, 0)
+## ศัตรูตีประตูเมืองหนึ่งครั้ง
+func _on_enemy_attack(e: TDEnemy, dmg: int) -> void:
+	if finished:
+		return
+	lives = max(lives - dmg, 0)
 	lives_changed.emit(lives, max_lives)
-	FX.explosion(_units, CASTLE_POS + Vector3(-0.5, 0.6, randf_range(-0.6, 0.6)), 0.8)
-	play_boom(-6.0)
+	var hit := e.strike_point()
+	FX.explosion(_units, hit, 0.45 if not e.data.is_boss else 1.0)
+	FX.float_text(_units, hit + Vector3.UP * 0.3, "-%d" % dmg, Color(1.0, 0.3, 0.25), 44)
+	play_boom(-10.0)
 	if rig.has_method("shake"):
-		rig.shake(0.15 if not e.data.is_boss else 0.5)
-	if e == _boss:
-		boss_hp_changed.emit(0.0, false)
-		_boss = null
+		rig.shake(0.08 if not e.data.is_boss else 0.3)
 	if lives <= 0:
 		_finish(false)
-		return
-	_check_phase_end.call_deferred()
 
-func _physics_process(_delta: float) -> void:
+func _physics_process(delta: float) -> void:
+	_castle_process(delta)
 	if _boss and is_instance_valid(_boss) and _boss.alive:
 		boss_hp_changed.emit(_boss.hp / (_boss.data.max_hp * _boss.hp_mult), true)
+
+# ---------------------------------------------------------------- ปราสาทยิงสวน
+func _castle_process(delta: float) -> void:
+	if finished:
+		return
+	var target := _castle_pick_target()
+	if target == null:
+		_castle_cd = CASTLE_FIRST_DELAY
+		return
+	_castle_cd -= delta
+	if _castle_cd <= 0.0:
+		_castle_cd = CASTLE_RELOAD
+		_castle_fire(target)
+
+func _castle_pick_target() -> TDEnemy:
+	## เลือกศัตรูที่ยืนตีประตูอยู่ ตัวที่เลือดเหลือน้อยสุดก่อน
+	var best: TDEnemy = null
+	for n in get_tree().get_nodes_in_group("enemies"):
+		var e := n as TDEnemy
+		if e and e.alive and e.attacking:
+			if best == null or e.hp < best.hp:
+				best = e
+	return best
+
+func _castle_fire(target: TDEnemy) -> void:
+	var bolt := MeshInstance3D.new()
+	var sm := SphereMesh.new()
+	sm.radius = 0.14
+	sm.height = 0.28
+	sm.material = FX.emissive_mat(Color(0.55, 0.85, 1.0), 4.0)
+	bolt.mesh = sm
+	bolt.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+	var glow := OmniLight3D.new()
+	glow.light_color = Color(0.5, 0.8, 1.0)
+	glow.light_energy = 2.5
+	glow.omni_range = 1.5
+	bolt.add_child(glow)
+	_units.add_child(bolt)
+	bolt.global_position = CASTLE_FIRE_POS
+	FX.ring(_units, CASTLE_POS, 1.2, Color(0.55, 0.85, 1.0), 0.3)
+	FX.hit_spark(_units, CASTLE_FIRE_POS, Color(0.6, 0.9, 1.0), 1.5)
+	# ลอยโค้งขึ้นแล้วพุ่งลงหาเป้า
+	var start := CASTLE_FIRE_POS
+	var target_obj: Object = target
+	var tw := bolt.create_tween()
+	tw.tween_method(func(t: float) -> void:
+		if not is_instance_valid(bolt):
+			return
+		var end: Vector3 = (target_obj as TDEnemy).aim_point() if is_instance_valid(target_obj) else bolt.global_position
+		var p := start.lerp(end, t)
+		p.y += sin(t * PI) * 0.8
+		bolt.global_position = p
+	, 0.0, 1.0, CASTLE_BOLT_TIME)
+	tw.tween_callback(func() -> void:
+		_castle_bolt_hit(target_obj, bolt.global_position)
+		bolt.queue_free()
+	)
+
+func _castle_bolt_hit(target_obj: Object, pos: Vector3) -> void:
+	FX.explosion(_units, pos, 0.6)
+	FX.ring(_units, Vector3(pos.x, 0.0, pos.z), 0.6, Color(0.55, 0.85, 1.0), 0.3)
+	if not is_instance_valid(target_obj):
+		return
+	var target := target_obj as TDEnemy
+	if target == null or not target.alive:
+		return
+	if target.data.id == &"soldier":
+		target.take_damage(target.hp + 1.0, true)   # ทหารราบตายนัดเดียว
+	else:
+		target.take_damage(CASTLE_DAMAGE, true)
 
 func _check_phase_end() -> void:
 	if not phase_running or finished or _groups_pending > 0:

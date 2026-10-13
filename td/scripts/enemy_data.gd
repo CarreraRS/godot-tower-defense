@@ -10,7 +10,8 @@ class_name EnemyData
 @export var speed: float = 1.0          ## ช่องต่อวินาที
 @export var armor: float = 0.0          ## ลดดาเมจต่อการโจมตีหนึ่งครั้ง
 @export var reward: int = 8
-@export var base_damage: int = 1        ## ลดชีวิตฐานเมื่อไปถึง
+@export var base_damage: int = 1        ## ดาเมจรวมต่อกำแพงเมือง (= จำนวนครั้งที่ตีประตู ครั้งละ 1)
+@export var attack_interval: float = 1.2 ## วินาทีระหว่างการตีประตูแต่ละครั้ง
 @export var is_air: bool = false
 @export var fly_height: float = 0.0
 @export var is_boss: bool = false

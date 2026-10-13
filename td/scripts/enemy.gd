@@ -3,7 +3,10 @@ class_name TDEnemy
 ## ศัตรูจากประตูมิติ: เคลื่อนที่ตามเส้นทาง (Curve3D) จนถึงปราสาท
 
 signal died(enemy: TDEnemy)
-signal reached_base(enemy: TDEnemy)
+signal attacked_base(enemy: TDEnemy, damage: int)  ## ตีประตูหนึ่งครั้ง
+
+const GATE_STOP := 0.35        ## หยุดก่อนถึงปลายเส้นทางเท่านี้ (ยืนหน้าประตู)
+const ATTACK_WINDUP := 0.8     ## เวลาตั้งท่าก่อนตีครั้งแรก
 
 var data: EnemyData
 var curve: Curve3D
@@ -21,6 +24,11 @@ var _bar_bg: MeshInstance3D
 var _spawn_t: float = 0.0
 var _length: float = 1.0
 var _slow_fx: MeshInstance3D
+
+var attacking: bool = false     ## กำลังยืนตีประตูเมือง
+var _attack_t: float = 0.0
+var _face_dir: Vector3 = Vector3.RIGHT
+var _lunge_tw: Tween
 
 func setup(d: EnemyData, path_curve: Curve3D, hp_multiplier: float = 1.0) -> void:
 	data = d
@@ -79,12 +87,15 @@ func _physics_process(delta: float) -> void:
 			_slow_factor = 1.0
 			if _slow_fx:
 				_slow_fx.visible = false
+	if attacking:
+		_process_attack(delta)
+		return
 	progress += data.speed * _slow_factor * delta
-	if progress >= _length:
-		alive = false
-		remove_from_group("enemies")
-		reached_base.emit(self)
-		queue_free()
+	var stop_at: float = max(_length - GATE_STOP, 0.0)
+	if progress >= stop_at:
+		progress = stop_at
+		_update_transform(delta)
+		_start_attack()
 		return
 	_update_transform(delta)
 
@@ -104,6 +115,47 @@ func _update_transform(delta: float) -> void:
 			var cur := Quaternion(_model.basis.orthonormalized())
 			var q := cur.slerp(Quaternion(target_basis), clamp(delta * 8.0, 0.0, 1.0))
 			_model.basis = Basis(q).scaled(_model.scale)
+
+# ---------------------------------------------------------------- โจมตีประตูเมือง
+func _start_attack() -> void:
+	attacking = true
+	_attack_t = ATTACK_WINDUP
+	var d := curve.sample_baked(_length, true) - curve.sample_baked(max(_length - 1.0, 0.0), true)
+	d.y = 0
+	_face_dir = d.normalized() if d.length_squared() > 0.0001 else Vector3.RIGHT
+	# ขยับไปยืนเรียงข้างกันหน้าประตู จะได้ไม่ซ้อนเป็นก้อนเดียว
+	var side := _face_dir.cross(Vector3.UP).normalized()
+	var spread := 0.45 if not data.is_boss else 0.0
+	var tw := create_tween()
+	tw.tween_property(self, "global_position", global_position + side * randf_range(-spread, spread), 0.3)
+	FX.float_text(get_parent(), global_position + Vector3.UP * (0.9 * data.model_scale + 0.2), "!", Color(1.0, 0.35, 0.3), 64)
+
+func _process_attack(delta: float) -> void:
+	_attack_t -= delta * _slow_factor   # โดนสโลว์ = ตีช้าลงด้วย
+	if _attack_t <= 0.0:
+		_attack_t += data.attack_interval
+		_strike()
+
+func _strike() -> void:
+	if _lunge_tw and _lunge_tw.is_valid():
+		_lunge_tw.kill()
+	_model.position = Vector3.ZERO
+	var reach := _face_dir * (0.25 * data.model_scale)
+	_lunge_tw = create_tween()
+	# ถอยง้าง -> พุ่งใส่ประตู -> กลับที่
+	_lunge_tw.tween_property(_model, "position", -reach * 0.4, 0.12).set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_QUAD)
+	_lunge_tw.tween_property(_model, "position", reach, 0.08).set_ease(Tween.EASE_IN).set_trans(Tween.TRANS_QUAD)
+	_lunge_tw.tween_callback(_on_impact)
+	_lunge_tw.tween_property(_model, "position", Vector3.ZERO, 0.25).set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_QUAD)
+
+func _on_impact() -> void:
+	if not alive:
+		return
+	attacked_base.emit(self, 1)
+
+## จุดที่โดนตี (ใช้วางเอฟเฟกต์)
+func strike_point() -> Vector3:
+	return global_position + _face_dir * (0.35 * data.model_scale) + Vector3.UP * (0.3 * data.model_scale + 0.15)
 
 func aim_point() -> Vector3:
 	return global_position + Vector3.UP * (0.25 * data.model_scale)
@@ -141,6 +193,9 @@ func apply_slow(factor: float, duration: float) -> void:
 
 func _die() -> void:
 	alive = false
+	attacking = false
+	if _lunge_tw and _lunge_tw.is_valid():
+		_lunge_tw.kill()
 	remove_from_group("enemies")
 	var parent := get_parent()
 	if data.explodes:
