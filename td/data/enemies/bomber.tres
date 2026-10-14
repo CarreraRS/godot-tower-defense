@@ -2,20 +2,32 @@
 
 [ext_resource type="Script" path="res://td/scripts/enemy_data.gd" id="1"]
 [ext_resource type="PackedScene" path="res://td/models/bomber.tscn" id="2"]
+[ext_resource type="Texture2D" path="res://td/icons/bomber.png" id="3"]
 
 [resource]
 script = ExtResource("1")
 id = &"bomber"
 display_name = "Bomber"
-thai_name = "เครื่องบินทิ้งระเบิด"
+thai_name = "อสูรเหล็กแห่งฟากฟ้า"
 model = ExtResource("2")
-max_hp = 2800.0
-speed = 0.42
+max_hp = 2700.0
+speed = 0.4
 armor = 6.0
 reward = 300
 base_damage = 12
 is_air = true
-fly_height = 2.4
+fly_height = 2.3
 is_boss = true
 explodes = true
 model_scale = 1.0
+lore = "เงาของมันบดบังดวงอาทิตย์ทั้งดวง ก่อนมันปรากฏจะมีเสียงหวีดโหยหวนดังมาจากอีกฟากของประตู เกราะหนาจนอาวุธใดของอาณาจักรก็แทบทำอะไรไม่ได้"
+counter = "มีเพียงผู้กล้าจากแสงสวรรค์เท่านั้นที่ต่อกรได้ วางผู้กล้าไว้ใกล้เส้นทางบิน โดยเฉพาะตรงหัวมุม"
+icon = ExtResource("3")
+attack_interval = 3.0
+strike_damage = 2
+dive_attack = false
+shoot_range = 0.0
+shoot_interval = 4.0
+shoot_pause = 0.6
+shoot_stun = 1.0
+shoot_splash = 0.0

@@ -112,3 +112,128 @@ static func ring(parent: Node, pos: Vector3, radius: float, color: Color, life: 
 	var tw := mi.create_tween()
 	tw.tween_property(mi, "scale", Vector3(radius, 1, radius), life).set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_CUBIC)
 	tw.tween_callback(mi.queue_free)
+
+static func tracer(parent: Node, from: Vector3, to: Vector3, color: Color, life: float = 0.12) -> void:
+	## เส้นกระสุน (เส้นบาง ๆ จางหาย)
+	var mi := MeshInstance3D.new()
+	var b := BoxMesh.new()
+	var d := from.distance_to(to)
+	b.size = Vector3(0.025, 0.025, max(d, 0.01))
+	b.material = emissive_mat(Color(color.r, color.g, color.b, 0.9), 3.0, true)
+	mi.mesh = b
+	mi.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+	parent.add_child(mi)
+	mi.global_position = (from + to) * 0.5
+	if d > 0.01:
+		mi.look_at(to, Vector3.UP if abs((to - from).normalized().y) < 0.99 else Vector3.RIGHT)
+	var tw := mi.create_tween()
+	tw.tween_property(mi, "scale", Vector3(0.2, 0.2, 1.0), life)
+	tw.tween_callback(mi.queue_free)
+
+static func lob(parent: Node, from: Vector3, to: Vector3, time: float, arc: float, color: Color, on_hit: Callable) -> void:
+	## ลูกกระสุน/จรวดที่ลอยไปหาเป้าแล้วเรียก on_hit
+	var mi := MeshInstance3D.new()
+	var s := SphereMesh.new()
+	s.radius = 0.07
+	s.height = 0.14
+	s.radial_segments = 6
+	s.rings = 3
+	s.material = emissive_mat(color, 3.5)
+	mi.mesh = s
+	mi.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+	parent.add_child(mi)
+	mi.global_position = from
+	var tw := mi.create_tween()
+	tw.tween_method(func(t: float) -> void:
+		var p := from.lerp(to, t)
+		p.y += sin(t * PI) * arc
+		mi.global_position = p
+	, 0.0, 1.0, time)
+	tw.tween_callback(func() -> void:
+		if on_hit.is_valid():
+			on_hit.call()
+		mi.queue_free())
+
+static func beam(parent: Node, points: PackedVector3Array, color: Color, life: float = 0.25) -> void:
+	## สายฟ้าซิกแซกระหว่างจุด
+	for i in range(points.size() - 1):
+		var a := points[i]
+		var b := points[i + 1]
+		var segs := 4
+		var prev := a
+		for k in range(1, segs + 1):
+			var t := float(k) / segs
+			var p := a.lerp(b, t)
+			if k < segs:
+				p += Vector3(randf_range(-0.12, 0.12), randf_range(-0.12, 0.12), randf_range(-0.12, 0.12))
+			tracer(parent, prev, p, color, life)
+			prev = p
+
+## ลำแสงพุ่งขึ้นฟ้า (อัญเชิญ/ทักษะ)
+static func pillar(parent: Node, pos: Vector3, color: Color, height: float = 4.0, radius: float = 0.35, life: float = 0.9) -> void:
+	var m := MeshInstance3D.new()
+	var cm := CylinderMesh.new()
+	cm.top_radius = radius * 0.6
+	cm.bottom_radius = radius
+	cm.height = height
+	cm.radial_segments = 16
+	cm.rings = 1
+	var mat := emissive_mat(Color(color.r, color.g, color.b, 0.55), 3.0, true)
+	mat.cull_mode = BaseMaterial3D.CULL_DISABLED
+	cm.material = mat
+	m.mesh = cm
+	m.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+	parent.add_child(m)
+	m.global_position = pos + Vector3.UP * height * 0.5
+	m.scale = Vector3(0.2, 1, 0.2)
+	var tw := m.create_tween()
+	tw.tween_property(m, "scale", Vector3(1, 1, 1), life * 0.25).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
+	tw.tween_property(m, "scale", Vector3(0.05, 1.2, 0.05), life * 0.75).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_IN)
+	tw.tween_callback(m.queue_free)
+	_particles(parent, pos + Vector3.UP * 0.2, color, 24, 0.06, 2.5, 0.9, -2.0)
+
+## รอยฟันดาบเป็นเสี้ยววงกลมด้านหน้า (หันตาม yaw)
+static func slash(parent: Node, pos: Vector3, yaw: float, radius: float, color: Color, life: float = 0.22) -> void:
+	var st := SurfaceTool.new()
+	st.begin(Mesh.PRIMITIVE_TRIANGLES)
+	var seg := 14
+	var a0 := deg_to_rad(-75.0)
+	var a1 := deg_to_rad(75.0)
+	for i in seg:
+		var t0 := float(i) / seg
+		var t1 := float(i + 1) / seg
+		var aa := lerpf(a0, a1, t0)
+		var ab := lerpf(a0, a1, t1)
+		var w0 := sin(t0 * PI)
+		var w1 := sin(t1 * PI)
+		var o0 := Vector3(sin(aa), 0, -cos(aa)) * radius
+		var o1 := Vector3(sin(ab), 0, -cos(ab)) * radius
+		var i0 := o0 * (1.0 - 0.35 * w0)
+		var i1 := o1 * (1.0 - 0.35 * w1)
+		var c0 := Color(color.r, color.g, color.b, 0.9 * w0)
+		var c1 := Color(color.r, color.g, color.b, 0.9 * w1)
+		st.set_color(Color(c0.r, c0.g, c0.b, 0.0)); st.add_vertex(i0)
+		st.set_color(c0); st.add_vertex(o0)
+		st.set_color(c1); st.add_vertex(o1)
+		st.set_color(Color(c0.r, c0.g, c0.b, 0.0)); st.add_vertex(i0)
+		st.set_color(c1); st.add_vertex(o1)
+		st.set_color(Color(c1.r, c1.g, c1.b, 0.0)); st.add_vertex(i1)
+	var m := MeshInstance3D.new()
+	m.mesh = st.commit()
+	var mat := StandardMaterial3D.new()
+	mat.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
+	mat.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
+	mat.vertex_color_use_as_albedo = true
+	mat.cull_mode = BaseMaterial3D.CULL_DISABLED
+	mat.albedo_color = Color(1.4, 1.4, 1.4, 1.0)
+	m.material_override = mat
+	m.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+	parent.add_child(m)
+	m.global_position = pos
+	m.rotation = Vector3(deg_to_rad(-12.0), yaw, 0)
+	m.scale = Vector3(0.7, 1, 0.7)
+	var tw := m.create_tween().set_parallel(true)
+	tw.tween_property(m, "scale", Vector3(1.15, 1, 1.15), life).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
+	tw.tween_property(m, "rotation:y", yaw + deg_to_rad(35.0), life)
+	tw.tween_property(mat, "albedo_color:a", 0.0, life).set_delay(life * 0.3)
+	tw.chain().tween_callback(m.queue_free)

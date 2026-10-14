@@ -1,6 +1,6 @@
 [gd_resource type="Theme" format=3]
 
-[ext_resource type="SystemFont" path="res://td/theme/ui_font.tres" id="1"]
+[ext_resource type="FontVariation" path="res://td/theme/ui_font.tres" id="1"]
 
 [sub_resource type="StyleBoxFlat" id="btn"]
 content_margin_left = 10.0

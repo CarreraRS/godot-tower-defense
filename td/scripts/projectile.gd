@@ -103,7 +103,11 @@ func _impact() -> void:
 			FX.explosion(parent, target_pos, 0.8 if kind == DefenderData.Attack.FIREBALL else 0.6)
 			FX.ring(parent, Vector3(target_pos.x, 0.25, target_pos.z), splash, color)
 			if level_ref and level_ref.has_method("play_boom"):
-				level_ref.play_boom(-10.0)
+				if kind == DefenderData.Attack.ROCK:
+					level_ref.play_sfx("glass", -12.0)
+					level_ref.play_boom(-16.0)
+				else:
+					level_ref.play_boom(-10.0)
 	else:
 		if is_instance_valid(target) and target.alive:
 			target.take_damage(damage, pierce)

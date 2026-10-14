@@ -34,14 +34,14 @@ window/stretch/aspect="expand"
 
 enabled=PackedStringArray("res://addons/godot_state_charts/plugin.cfg")
 
+[global]
+
+test=false
+
 [gui]
 
 theme/custom="res://td/theme/ui_theme.tres"
 theme/custom_font="res://td/theme/ui_font.tres"
-
-[global]
-
-test=false
 
 [input]
 

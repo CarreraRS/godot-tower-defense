@@ -1,0 +1,13 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" path="res://td/characters/archer/archer.glb" id="1_e"]
+
+[node name="RangerModel" type="Node3D"]
+
+[node name="Model" parent="." instance=ExtResource("1_e")]
+position = Vector3(0, 0, 0)
+rotation = Vector3(0.0, 3.14159, 0.0)
+scale = Vector3(0.44, 0.44, 0.44)
+
+[node name="Muzzle" type="Marker3D" parent="."]
+position = Vector3(0.0, 0.5, -0.3)

@@ -1,5 +1,10 @@
-[gd_resource type="SystemFont" format=3]
+[gd_resource type="FontVariation" format=3]
+
+[ext_resource type="FontFile" path="res://td/theme/Kanit-SemiBold.ttf" id="1"]
+
+[sub_resource type="SystemFont" id="sys"]
+font_names = PackedStringArray("Leelawadee UI", "Tahoma", "Segoe UI Symbol", "Noto Sans", "Sans-Serif")
 
 [resource]
-font_names = PackedStringArray("Leelawadee UI", "Tahoma", "Segoe UI", "Noto Sans Thai", "Noto Sans", "Sans-Serif")
-font_weight = 600
+fallbacks = Array[Font]([SubResource("sys")])
+base_font = ExtResource("1")

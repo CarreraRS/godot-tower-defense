@@ -1,0 +1,43 @@
+[gd_resource type="Resource" script_class="DefenderData" format=3]
+
+[ext_resource type="Script" path="res://td/scripts/defender_data.gd" id="1"]
+[ext_resource type="PackedScene" path="res://td/models/golem.tscn" id="2"]
+[ext_resource type="Texture2D" path="res://td/icons/golem.png" id="3"]
+
+[resource]
+script = ExtResource("1")
+id = &"golem"
+display_name = "Golem"
+thai_name = "โกเลม"
+description = "ยักษ์หินโบราณ ทุบพื้นโดนศัตรูรอบตัว เจาะเกราะ\nทำให้ศัตรูภาคพื้นช้าลง"
+model = ExtResource("2")
+icon = ExtResource("3")
+color = Color(0.55, 0.53, 0.5, 1)
+cost = 170
+attack_range = 1.6
+damage = 34.0
+fire_interval = 1.8
+hits_ground = true
+hits_air = false
+splash_radius = 0.0
+armor_pierce = true
+slow_factor = 0.65
+slow_duration = 1.2
+attack_type = 7
+projectile_speed = 8.0
+projectile_color = Color(0.45, 0.85, 1.0, 1)
+attack_anim = &""
+idle_anim = &""
+attack_delay = 0.0
+chain_count = 0
+unique = false
+aura_radius = 0.0
+aura_mult = 1.0
+max_level = 3
+ability = 5
+ability_name = "ทุบแผ่นดิน"
+ability_desc = "แผ่นดินไหว ดาเมจ x3 และศัตรูช้าลง 70% นาน 4 วินาที"
+ability_cd = 22.0
+ability_dur = 4.0
+ability_power = 3.0
+ability_radius = 2.6

@@ -2,20 +2,32 @@
 
 [ext_resource type="Script" path="res://td/scripts/enemy_data.gd" id="1"]
 [ext_resource type="PackedScene" path="res://td/models/tank.tscn" id="2"]
+[ext_resource type="Texture2D" path="res://td/icons/tank.png" id="3"]
 
 [resource]
 script = ExtResource("1")
 id = &"tank"
 display_name = "Tank"
-thai_name = "รถถัง"
+thai_name = "ป้อมเหล็กเคลื่อนที่"
 model = ExtResource("2")
-max_hp = 600.0
-speed = 0.6
+max_hp = 560.0
+speed = 0.55
 armor = 12.0
-reward = 40
+reward = 42
 base_damage = 4
 is_air = false
 fly_height = 0.0
 is_boss = false
 explodes = true
 model_scale = 1.0
+lore = "ป้อมปราการเหล็กทั้งหลังที่คลานมาบนสายพาน มีท่อยาวยื่นออกมาเหมือนเขาสัตว์ ลูกธนูธรรมดากระดอนออกหมด"
+counter = "เกราะหนามาก ใช้โกเลม นักบุญ หรือผู้กล้าที่โจมตีเจาะเกราะได้"
+icon = ExtResource("3")
+attack_interval = 3.5
+strike_damage = 2
+dive_attack = false
+shoot_range = 0.0
+shoot_interval = 4.0
+shoot_pause = 0.6
+shoot_stun = 1.0
+shoot_splash = 0.0

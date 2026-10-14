@@ -184,10 +184,35 @@ shading_mode = 0
 [sub_resource type="CylinderMesh" id="CylinderMesh_37"]
 top_radius = 0.003
 bottom_radius = 0.003
-height = 0.38
+height = 0.39
 radial_segments = 4
 rings = 0
 material = SubResource("StandardMaterial3D_36")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_38"]
+albedo_color = Color(0.6, 0.45, 0.3, 1.0)
+roughness = 0.8
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_39"]
+top_radius = 0.006
+bottom_radius = 0.006
+height = 0.3
+radial_segments = 4
+rings = 0
+material = SubResource("StandardMaterial3D_38")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_40"]
+albedo_color = Color(0.75, 0.77, 0.8, 1.0)
+roughness = 0.8
+metallic = 0.7
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_41"]
+top_radius = 0.0
+bottom_radius = 0.014
+height = 0.04
+radial_segments = 4
+rings = 0
+material = SubResource("StandardMaterial3D_40")
 
 [node name="ArcherModel" type="Node3D"]
 
@@ -297,18 +322,28 @@ position = Vector3(0, 0, 0)
 mesh = SubResource("CylinderMesh_32")
 
 [node name="LimbU" type="MeshInstance3D" parent="Bow"]
-position = Vector3(0, 0.1, -0.03)
-rotation = Vector3(-0.31416, 0.0, 0.0)
+position = Vector3(0, 0.1, 0.03)
+rotation = Vector3(0.31416, 0.0, 0.0)
 mesh = SubResource("CylinderMesh_34")
 
 [node name="LimbD" type="MeshInstance3D" parent="Bow"]
-position = Vector3(0, -0.1, -0.03)
-rotation = Vector3(0.31416, 0.0, 0.0)
+position = Vector3(0, -0.1, 0.03)
+rotation = Vector3(-0.31416, 0.0, 0.0)
 mesh = SubResource("CylinderMesh_35")
 
 [node name="String" type="MeshInstance3D" parent="Bow"]
-position = Vector3(0, 0, 0.0)
+position = Vector3(0, 0, 0.061)
 mesh = SubResource("CylinderMesh_37")
+
+[node name="Arrow" type="MeshInstance3D" parent="Bow"]
+position = Vector3(0.01, 0, -0.08)
+rotation = Vector3(1.5708, 0.0, 0.0)
+mesh = SubResource("CylinderMesh_39")
+
+[node name="ArrowTip" type="MeshInstance3D" parent="Bow"]
+position = Vector3(0.01, 0, -0.245)
+rotation = Vector3(-1.5708, 0.0, 0.0)
+mesh = SubResource("CylinderMesh_41")
 
 [node name="Muzzle" type="Marker3D" parent="."]
 position = Vector3(-0.15, 0.35, -0.2)

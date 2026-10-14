@@ -2,20 +2,32 @@
 
 [ext_resource type="Script" path="res://td/scripts/enemy_data.gd" id="1"]
 [ext_resource type="PackedScene" path="res://td/models/soldier.tscn" id="2"]
+[ext_resource type="Texture2D" path="res://td/icons/soldier.png" id="3"]
 
 [resource]
 script = ExtResource("1")
 id = &"soldier"
 display_name = "Soldier"
-thai_name = "ทหารราบ"
+thai_name = "นักรบลายพราง"
 model = ExtResource("2")
 max_hp = 60.0
-speed = 1.1
+speed = 1.0
 armor = 0.0
-reward = 8
+reward = 9
 base_damage = 1
 is_air = false
 fly_height = 0.0
 is_boss = false
 explodes = false
 model_scale = 1.0
+lore = "มนุษย์ในชุดลายพรางสีหม่น ถือไม้เท้าเหล็กที่พ่นไฟและเสียงฟ้าผ่าได้ไกลกว่าธนู สวมหมวกเหล็กครึ่งลูก แต่ร่างกายก็บาดเจ็บได้เหมือนมนุษย์ทั่วไป"
+counter = "มาเป็นกลุ่มใหญ่ ใช้อัศวินและนักปรุงยาสกัดไว้ข้างถนน"
+icon = ExtResource("3")
+attack_interval = 3.0
+strike_damage = 1
+dive_attack = false
+shoot_range = 0.0
+shoot_interval = 4.0
+shoot_pause = 0.6
+shoot_stun = 1.0
+shoot_splash = 0.0

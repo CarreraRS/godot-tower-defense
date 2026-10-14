@@ -1,0 +1,198 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://td/scripts/spinner.gd" id="1_e"]
+[ext_resource type="Script" path="res://td/scripts/bob.gd" id="2_e"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_1"]
+albedo_color = Color(0.5, 0.48, 0.52, 1.0)
+roughness = 0.8
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_2"]
+top_radius = 0.22
+bottom_radius = 0.3
+height = 0.14
+radial_segments = 6
+rings = 0
+material = SubResource("StandardMaterial3D_1")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_3"]
+albedo_color = Color(0.35, 0.33, 0.38, 1.0)
+roughness = 0.8
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_4"]
+top_radius = 0.2
+bottom_radius = 0.2
+height = 0.04
+radial_segments = 6
+rings = 0
+material = SubResource("StandardMaterial3D_3")
+
+[sub_resource type="BoxMesh" id="BoxMesh_5"]
+size = Vector3(0.06, 0.3, 0.06)
+material = SubResource("StandardMaterial3D_1")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_6"]
+albedo_color = Color(0.55, 0.4, 1.0, 1.0)
+roughness = 0.8
+emission_enabled = true
+emission = Color(0.55, 0.4, 1.0, 1.0)
+emission_energy_multiplier = 3.0
+
+[sub_resource type="BoxMesh" id="BoxMesh_7"]
+size = Vector3(0.065, 0.08, 0.02)
+material = SubResource("StandardMaterial3D_6")
+
+[sub_resource type="BoxMesh" id="BoxMesh_8"]
+size = Vector3(0.06, 0.3, 0.06)
+material = SubResource("StandardMaterial3D_1")
+
+[sub_resource type="BoxMesh" id="BoxMesh_9"]
+size = Vector3(0.065, 0.08, 0.02)
+material = SubResource("StandardMaterial3D_6")
+
+[sub_resource type="BoxMesh" id="BoxMesh_10"]
+size = Vector3(0.06, 0.3, 0.06)
+material = SubResource("StandardMaterial3D_1")
+
+[sub_resource type="BoxMesh" id="BoxMesh_11"]
+size = Vector3(0.065, 0.08, 0.02)
+material = SubResource("StandardMaterial3D_6")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_12"]
+albedo_color = Color(0.45, 0.9, 1.0, 0.85)
+roughness = 0.8
+emission_enabled = true
+emission = Color(0.45, 0.9, 1.0, 1.0)
+emission_energy_multiplier = 2.5
+transparency = 1
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_13"]
+top_radius = 0.0
+bottom_radius = 0.13
+height = 0.24
+radial_segments = 6
+rings = 0
+material = SubResource("StandardMaterial3D_12")
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_14"]
+top_radius = 0.13
+bottom_radius = 0.0
+height = 0.18
+radial_segments = 6
+rings = 0
+material = SubResource("StandardMaterial3D_12")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_15"]
+albedo_color = Color(0.75, 0.6, 1.0, 1.0)
+roughness = 0.8
+emission_enabled = true
+emission = Color(0.75, 0.6, 1.0, 1.0)
+emission_energy_multiplier = 3.0
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_16"]
+top_radius = 0.0
+bottom_radius = 0.035
+height = 0.1
+radial_segments = 4
+rings = 0
+material = SubResource("StandardMaterial3D_15")
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_17"]
+top_radius = 0.0
+bottom_radius = 0.035
+height = 0.1
+radial_segments = 4
+rings = 0
+material = SubResource("StandardMaterial3D_15")
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_18"]
+top_radius = 0.0
+bottom_radius = 0.035
+height = 0.1
+radial_segments = 4
+rings = 0
+material = SubResource("StandardMaterial3D_15")
+
+[node name="CrystalModel" type="Node3D"]
+
+[node name="Base" type="MeshInstance3D" parent="."]
+position = Vector3(0, 0.07, 0)
+mesh = SubResource("CylinderMesh_2")
+
+[node name="Ring" type="MeshInstance3D" parent="."]
+position = Vector3(0, 0.16, 0)
+mesh = SubResource("CylinderMesh_4")
+
+[node name="Pillar0" type="MeshInstance3D" parent="."]
+position = Vector3(0.2, 0.3, 0.0)
+rotation = Vector3(0.0, -0.0, 0.0)
+mesh = SubResource("BoxMesh_5")
+
+[node name="Rune0" type="MeshInstance3D" parent="."]
+position = Vector3(0.2, 0.33, 0.0)
+rotation = Vector3(0.0, -0.0, 0.0)
+mesh = SubResource("BoxMesh_7")
+
+[node name="Pillar1" type="MeshInstance3D" parent="."]
+position = Vector3(-0.09999999999999996, 0.3, 0.17320508075688776)
+rotation = Vector3(0.0, -2.0944, 0.0)
+mesh = SubResource("BoxMesh_8")
+
+[node name="Rune1" type="MeshInstance3D" parent="."]
+position = Vector3(-0.09999999999999996, 0.33, 0.17320508075688776)
+rotation = Vector3(0.0, -2.0944, 0.0)
+mesh = SubResource("BoxMesh_9")
+
+[node name="Pillar2" type="MeshInstance3D" parent="."]
+position = Vector3(-0.10000000000000009, 0.3, -0.17320508075688767)
+rotation = Vector3(0.0, -4.18879, 0.0)
+mesh = SubResource("BoxMesh_10")
+
+[node name="Rune2" type="MeshInstance3D" parent="."]
+position = Vector3(-0.10000000000000009, 0.33, -0.17320508075688767)
+rotation = Vector3(0.0, -4.18879, 0.0)
+mesh = SubResource("BoxMesh_11")
+
+[node name="Float" type="Node3D" parent="."]
+position = Vector3(0, 0.62, 0)
+script = ExtResource("2_e")
+amplitude = 0.04
+speed = 2.0
+
+[node name="Spin" type="Node3D" parent="Float"]
+script = ExtResource("1_e")
+axis = Vector3(0, 1, 0)
+speed_deg = 60.0
+
+[node name="Top" type="MeshInstance3D" parent="Float/Spin"]
+position = Vector3(0, 0.12, 0)
+mesh = SubResource("CylinderMesh_13")
+
+[node name="Bottom" type="MeshInstance3D" parent="Float/Spin"]
+position = Vector3(0, -0.09, 0)
+mesh = SubResource("CylinderMesh_14")
+
+[node name="Orbit" type="Node3D" parent="Float"]
+script = ExtResource("1_e")
+axis = Vector3(0, 1, 0)
+speed_deg = -140.0
+
+[node name="Shard0" type="MeshInstance3D" parent="Float/Orbit"]
+position = Vector3(0.24, 0, 0.0)
+mesh = SubResource("CylinderMesh_16")
+
+[node name="Shard1" type="MeshInstance3D" parent="Float/Orbit"]
+position = Vector3(-0.11999999999999994, 0, 0.20784609690826528)
+mesh = SubResource("CylinderMesh_17")
+
+[node name="Shard2" type="MeshInstance3D" parent="Float/Orbit"]
+position = Vector3(-0.1200000000000001, 0, -0.2078460969082652)
+mesh = SubResource("CylinderMesh_18")
+
+[node name="Glow" type="OmniLight3D" parent="Float"]
+light_color = Color(0.5, 0.8, 1, 1)
+light_energy = 1.0
+omni_range = 1.2
+
+[node name="Muzzle" type="Marker3D" parent="Float"]
+position = Vector3(0, 0, 0)

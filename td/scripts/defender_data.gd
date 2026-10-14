@@ -2,7 +2,8 @@ extends Resource
 class_name DefenderData
 ## ข้อมูลของยูนิตฝ่ายอาณาจักร (ป้อมป้องกัน) — แก้ค่าได้จาก Inspector
 
-enum Attack { ARROW, BOLT, FIREBALL, ROCK, SPEAR, MELEE }
+enum Ability { NONE, POWER, RAPID, POTION, EMPOWER, QUAKE, BLESS, INFERNO, HEROIC }
+enum Attack { ARROW, BOLT, FIREBALL, ROCK, SPEAR, MELEE, CHAIN, PULSE }
 
 @export var id: StringName = &"archer"
 @export var display_name: String = "Archer"
@@ -23,6 +24,10 @@ enum Attack { ARROW, BOLT, FIREBALL, ROCK, SPEAR, MELEE }
 @export var armor_pierce: bool = false
 @export var slow_factor: float = 1.0   ## 1 = ไม่ทำให้ช้า, 0.5 = ช้าลงครึ่งหนึ่ง
 @export var slow_duration: float = 0.0
+@export var chain_count: int = 0       ## CHAIN: จำนวนเป้าที่สายฟ้ากระโดดไปเพิ่ม
+@export var unique: bool = false       ## วางได้ตัวเดียวต่อด่าน (ผู้กล้า)
+@export var aura_radius: float = 0.0   ## เพิ่มดาเมจให้ยูนิตรอบตัว
+@export var aura_mult: float = 1.0
 
 @export_group("Attack Visual")
 @export var attack_type: Attack = Attack.ARROW
@@ -30,6 +35,17 @@ enum Attack { ARROW, BOLT, FIREBALL, ROCK, SPEAR, MELEE }
 @export var projectile_color: Color = Color(1, 0.9, 0.6)
 @export var attack_anim: StringName = &""   ## ชื่อแอนิเมชันโจมตีในโมเดล (ถ้ามี)
 @export var idle_anim: StringName = &""
+@export var attack_delay: float = 0.0       ## หน่วงเวลาให้ตรงจังหวะท่าโจมตี
+
+@export_group("Ability")
+## ทักษะกดใช้: 0=ไม่มี 1=POWER 2=RAPID 3=POTION 4=EMPOWER 5=QUAKE 6=BLESS 7=INFERNO 8=HEROIC
+@export var ability: Ability = Ability.NONE
+@export var ability_name: String = ""
+@export_multiline var ability_desc: String = ""
+@export var ability_cd: float = 25.0       ## คูลดาวน์ (วินาที)
+@export var ability_dur: float = 6.0       ## ระยะเวลาที่ได้ผล
+@export var ability_power: float = 2.0     ## ตัวคูณหลัก
+@export var ability_radius: float = 2.5    ## รัศมี (สำหรับทักษะวงกว้าง)
 
 @export_group("Upgrade")
 @export var max_level: int = 3

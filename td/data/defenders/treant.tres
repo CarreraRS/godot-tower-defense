@@ -1,0 +1,35 @@
+[gd_resource type="Resource" script_class="DefenderData" format=3]
+
+[ext_resource type="Script" path="res://td/scripts/defender_data.gd" id="1"]
+[ext_resource type="PackedScene" path="res://td/models/treant.tscn" id="2"]
+[ext_resource type="Texture2D" path="res://td/icons/treant.png" id="3"]
+
+[resource]
+script = ExtResource("1")
+id = &"treant"
+display_name = "Treant"
+thai_name = "ทรีแอนต์"
+description = "ภูตต้นไม้โบราณ ฟาดรากรอบตัว ดาเมจกระจาย\nทำให้ศัตรูภาคพื้นช้าลง 50%"
+model = ExtResource("2")
+icon = ExtResource("3")
+color = Color(0.35, 0.55, 0.25, 1)
+cost = 120
+attack_range = 1.7
+damage = 20.0
+fire_interval = 2.0
+hits_ground = true
+hits_air = false
+splash_radius = 0.0
+armor_pierce = false
+slow_factor = 0.5
+slow_duration = 1.6
+attack_type = 7
+projectile_speed = 8.0
+projectile_color = Color(0.45, 0.9, 0.35, 1)
+attack_anim = &""
+idle_anim = &""
+attack_delay = 0.0
+chain_count = 0
+unique = false
+aura_radius = 0.0
+aura_mult = 1.0

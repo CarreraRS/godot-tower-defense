@@ -1,0 +1,35 @@
+[gd_resource type="Resource" script_class="DefenderData" format=3]
+
+[ext_resource type="Script" path="res://td/scripts/defender_data.gd" id="1"]
+[ext_resource type="PackedScene" path="res://td/models/crystal.tscn" id="2"]
+[ext_resource type="Texture2D" path="res://td/icons/crystal.png" id="3"]
+
+[resource]
+script = ExtResource("1")
+id = &"crystal"
+display_name = "Arcane Crystal"
+thai_name = "คริสตัลอาคม"
+description = "ปล่อยสายฟ้ากระโดด 4 เป้า เจาะเกราะ\nแรงต่อรถถังและอากาศยาน"
+model = ExtResource("2")
+icon = ExtResource("3")
+color = Color(0.45, 0.75, 1.0, 1)
+cost = 150
+attack_range = 3.0
+damage = 26.0
+fire_interval = 1.15
+hits_ground = true
+hits_air = true
+splash_radius = 0.0
+armor_pierce = true
+slow_factor = 1.0
+slow_duration = 0.0
+attack_type = 6
+projectile_speed = 8.0
+projectile_color = Color(0.6, 0.85, 1.0, 1)
+attack_anim = &""
+idle_anim = &""
+attack_delay = 0.0
+chain_count = 3
+unique = false
+aura_radius = 0.0
+aura_mult = 1.0

@@ -2,20 +2,32 @@
 
 [ext_resource type="Script" path="res://td/scripts/enemy_data.gd" id="1"]
 [ext_resource type="PackedScene" path="res://td/models/humvee.tscn" id="2"]
+[ext_resource type="Texture2D" path="res://td/icons/humvee.png" id="3"]
 
 [resource]
 script = ExtResource("1")
 id = &"humvee"
 display_name = "Humvee"
-thai_name = "รถหุ้มเกราะ"
+thai_name = "รถม้าเหล็กไร้ม้า"
 model = ExtResource("2")
 max_hp = 150.0
-speed = 1.5
+speed = 1.4
 armor = 3.0
-reward = 15
+reward = 16
 base_damage = 2
 is_air = false
 fly_height = 0.0
 is_boss = false
 explodes = true
 model_scale = 1.0
+lore = "เกวียนเหล็กสี่ล้อที่วิ่งได้เองโดยไม่มีม้าลาก ส่งเสียงคำรามและพ่นควันดำ เร็วกว่าม้าศึกที่ดีที่สุดของเรา"
+counter = "เร็วมาก ใช้จอมเวทย์ทำให้ช้าลง หรือโกเลมทุบให้หยุด"
+icon = ExtResource("3")
+attack_interval = 2.8
+strike_damage = 1
+dive_attack = false
+shoot_range = 0.0
+shoot_interval = 4.0
+shoot_pause = 0.6
+shoot_stun = 1.0
+shoot_splash = 0.0

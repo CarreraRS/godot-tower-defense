@@ -2,20 +2,32 @@
 
 [ext_resource type="Script" path="res://td/scripts/enemy_data.gd" id="1"]
 [ext_resource type="PackedScene" path="res://td/models/helicopter.tscn" id="2"]
+[ext_resource type="Texture2D" path="res://td/icons/helicopter.png" id="3"]
 
 [resource]
 script = ExtResource("1")
 id = &"helicopter"
 display_name = "Helicopter"
-thai_name = "เฮลิคอปเตอร์"
+thai_name = "นกเหล็กใบพัด"
 model = ExtResource("2")
-max_hp = 230.0
-speed = 1.2
+max_hp = 180.0
+speed = 1.1
 armor = 2.0
-reward = 25
+reward = 26
 base_damage = 3
 is_air = true
-fly_height = 1.5
+fly_height = 1.4
 is_boss = false
 explodes = true
 model_scale = 1.0
+lore = "นกยักษ์ไร้ขนที่มีใบดาบหมุนอยู่บนหลัง ลอยนิ่งกลางอากาศได้ ลมจากปีกพัดต้นไม้ล้มระเนระนาด"
+counter = "อยู่บนฟ้า อัศวิน นักปรุงยา และโกเลมตีไม่ถึง ใช้นักธนู จอมเวทย์ นักบุญ หรือมังกร"
+icon = ExtResource("3")
+attack_interval = 3.2
+strike_damage = 1
+dive_attack = false
+shoot_range = 0.0
+shoot_interval = 4.0
+shoot_pause = 0.6
+shoot_stun = 1.0
+shoot_splash = 0.0

@@ -1,0 +1,43 @@
+[gd_resource type="Resource" script_class="DefenderData" format=3]
+
+[ext_resource type="Script" path="res://td/scripts/defender_data.gd" id="1"]
+[ext_resource type="PackedScene" path="res://td/models/saint.tscn" id="2"]
+[ext_resource type="Texture2D" path="res://td/icons/saint.png" id="3"]
+
+[resource]
+script = ExtResource("1")
+id = &"saint"
+display_name = "Saint"
+thai_name = "นักบุญ"
+description = "ยิงแสงศักดิ์สิทธิ์เจาะเกราะ ทั้งภาคพื้นและอากาศ\nออร่าเพิ่มดาเมจพวกพ้องรอบตัว 15%"
+model = ExtResource("2")
+icon = ExtResource("3")
+color = Color(0.95, 0.9, 0.7, 1)
+cost = 220
+attack_range = 2.7
+damage = 30.0
+fire_interval = 1.1
+hits_ground = true
+hits_air = true
+splash_radius = 0.0
+armor_pierce = true
+slow_factor = 1.0
+slow_duration = 0.0
+attack_type = 1
+projectile_speed = 10.0
+projectile_color = Color(1.0, 0.9, 0.5, 1)
+attack_anim = &""
+idle_anim = &""
+attack_delay = 0.0
+chain_count = 0
+unique = false
+aura_radius = 2.0
+aura_mult = 1.15
+max_level = 3
+ability = 6
+ability_name = "พรศักดิ์สิทธิ์"
+ability_desc = "พวกพ้องในวง ดาเมจ x1.4 และตีเร็ว x1.5 นาน 8 วินาที"
+ability_cd = 30.0
+ability_dur = 8.0
+ability_power = 1.4
+ability_radius = 2.6
